@@ -12,15 +12,15 @@ use Spatie\EventSourcing\Snapshots\SnapshotRepository;
 
 abstract class AggregateRoot
 {
-    private string $uuid = '';
+    private $uuid = '';
 
-    private array $recordedEvents = [];
+    private $recordedEvents = [];
 
-    protected int $aggregateVersion = 0;
+    protected $aggregateVersion = 0;
 
-    protected int $aggregateVersionAfterReconstitution = 0;
+    protected $aggregateVersionAfterReconstitution = 0;
 
-    protected static bool $allowConcurrency = false;
+    protected static $allowConcurrency = false;
 
     public static function retrieve(string $uuid): self
     {
@@ -48,7 +48,7 @@ abstract class AggregateRoot
             [$this->getStoredEventRepository(), 'persistMany'],
             $this->getAndClearRecordedEvents(),
             $this->uuid ?? '',
-            $this->aggregateVersion,
+            $this->aggregateVersion
         );
 
         $storedEvents->each(function (StoredEvent $storedEvent) {
@@ -65,7 +65,7 @@ abstract class AggregateRoot
         return $this->getSnapshotRepository()->persist(new Snapshot(
             $this->uuid,
             $this->aggregateVersion,
-            $this->getState(),
+            $this->getState()
         ));
     }
 
@@ -89,7 +89,7 @@ abstract class AggregateRoot
         $class = new ReflectionClass($this);
 
         return collect($class->getProperties())
-            ->reject(fn (ReflectionProperty $reflectionProperty) => $reflectionProperty->isStatic())
+            ->reject(function (ReflectionProperty $reflectionProperty) {function $reflectionProperty->isStatic();})
             ->mapWithKeys(function (ReflectionProperty $property) {
                 return [$property->getName() => $this->{$property->getName()}];
             })->toArray();
@@ -144,7 +144,7 @@ abstract class AggregateRoot
                 $this,
                 $this->uuid,
                 $this->aggregateVersionAfterReconstitution,
-                $latestPersistedVersionId,
+                $latestPersistedVersionId
                 );
         }
     }
