@@ -26,7 +26,7 @@ class EventHandlerCollection extends Collection
     {
         $eventHandlers = $this
             ->filter(
-                fn (EventHandler $eventHandler) => in_array($storedEvent->event_class, $eventHandler->handles(), true)
+                function (EventHandler $eventHandler) {return in_array($storedEvent->event_class, $eventHandler->handles(), true);}
             )->toArray();
 
         return new static($eventHandlers);
@@ -35,15 +35,15 @@ class EventHandlerCollection extends Collection
     public function call(string $method): void
     {
         $this
-            ->filter(fn (EventHandler $eventHandler) => method_exists($eventHandler, $method))
-            ->each(fn (EventHandler $eventHandler) => app()->call([$eventHandler, $method]));
+            ->filter(function (EventHandler $eventHandler) use ($method) {return method_exists($eventHandler, $method);})
+            ->each(function (EventHandler $eventHandler) use ($method) {return app()->call([$eventHandler, $method]);});
     }
 
     public function remove(array $eventHandlerClassNames): void
     {
         $this->items = $this
             ->reject(
-                fn (EventHandler $eventHandler) => in_array(get_class($eventHandler), $eventHandlerClassNames)
+                function (EventHandler $eventHandler) use ($eventHandlerClassNames) {return in_array(get_class($eventHandler), $eventHandlerClassNames);}
             )
             ->toArray();
     }
@@ -51,14 +51,14 @@ class EventHandlerCollection extends Collection
     public function syncEventHandlers(): self
     {
         return $this ->reject(
-            fn (EventHandler $eventHandler) => $eventHandler instanceof ShouldQueue
+            function (EventHandler $eventHandler) {return $eventHandler instanceof ShouldQueue;}
         );
     }
 
     public function asyncEventHandlers(): self
     {
         return $this->filter(
-            fn (EventHandler $eventHandler) => $eventHandler instanceof ShouldQueue
+            function (EventHandler $eventHandler) {return $eventHandler instanceof ShouldQueue;}
         );
     }
 }

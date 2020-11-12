@@ -13,7 +13,7 @@ use Spatie\EventSourcing\StoredEvents\StoredEvent;
 
 class EloquentStoredEventRepository implements StoredEventRepository
 {
-    protected string $storedEventModel;
+    protected $storedEventModel;
 
     public function __construct()
     {
@@ -33,7 +33,7 @@ class EloquentStoredEventRepository implements StoredEventRepository
             $query->uuid($uuid);
         }
 
-        return $query->orderBy('id')->cursor()->map(fn (EloquentStoredEvent $storedEvent) => $storedEvent->toStoredEvent());
+        return $query->orderBy('id')->cursor()->map(function (EloquentStoredEvent $storedEvent) {return $storedEvent->toStoredEvent();});
     }
 
     public function retrieveAllStartingFrom(int $startingFrom, string $uuid = null): LazyCollection
@@ -45,7 +45,7 @@ class EloquentStoredEventRepository implements StoredEventRepository
             ->orderBy('id')
             ->cursor();
 
-        return $lazyCollection->map(fn (EloquentStoredEvent $storedEvent) => $storedEvent->toStoredEvent());
+        return $lazyCollection->map(function (EloquentStoredEvent $storedEvent) {return $storedEvent->toStoredEvent();});
     }
 
     public function countAllStartingFrom(int $startingFrom, string $uuid = null): int
@@ -63,7 +63,7 @@ class EloquentStoredEventRepository implements StoredEventRepository
         return $query
             ->orderBy('id')
             ->cursor()
-            ->map(fn (EloquentStoredEvent $storedEvent) => $storedEvent->toStoredEvent());
+            ->map(function (EloquentStoredEvent $storedEvent) {return $storedEvent->toStoredEvent();});
     }
 
     public function persist(ShouldBeStored $event, string $uuid = null, int $aggregateVersion = null): StoredEvent
@@ -72,7 +72,7 @@ class EloquentStoredEventRepository implements StoredEventRepository
         $eloquentStoredEvent = new $this->storedEventModel();
 
         $eloquentStoredEvent->setOriginalEvent($event);
-        
+
         $eloquentStoredEvent->setRawAttributes([
             'event_properties' => app(EventSerializer::class)->serialize(clone $event),
             'aggregate_uuid' => $uuid,

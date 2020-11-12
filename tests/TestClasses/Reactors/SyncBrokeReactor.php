@@ -9,7 +9,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Mailables\AccountBroke;
 
 class SyncBrokeReactor extends Reactor
 {
-    protected array $handlesEvents = [
+    protected $handlesEvents = [
         MoneySubtractedEvent::class => 'onMoneySubtracted',
     ];
 

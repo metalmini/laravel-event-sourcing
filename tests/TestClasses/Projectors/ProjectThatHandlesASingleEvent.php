@@ -7,7 +7,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Events\MoneyAddedEvent;
 
 class ProjectThatHandlesASingleEvent extends Projector
 {
-    public string $handleEvent = MoneyAddedEvent::class;
+    public $handleEvent = MoneyAddedEvent::class;
 
     public function __invoke(MoneyAddedEvent $event)
     {

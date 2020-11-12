@@ -10,7 +10,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Mailables\AccountBroke;
 
 class BrokeReactor extends Reactor implements ShouldQueue
 {
-    protected array $handlesEvents = [
+    protected $handlesEvents = [
         MoneySubtractedEvent::class => 'onMoneySubtracted',
     ];
 

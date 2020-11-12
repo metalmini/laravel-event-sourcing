@@ -9,7 +9,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Events\MoneyAddedEvent;
 
 class ProjectorThatWritesMetaData extends Projector
 {
-    protected array $handlesEvents = [
+    protected $handlesEvents = [
         MoneyAddedEvent::class => 'onMoneyAdded',
     ];
 

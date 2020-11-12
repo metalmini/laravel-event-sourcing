@@ -8,9 +8,9 @@ use Spatie\EventSourcing\Tests\TestClasses\Repositories\OtherEloquentStoredEvent
 
 class AccountAggregateRootWithStoredEventRepositorySpecified extends AggregateRoot
 {
-    public int $balance = 0;
+    public $balance = 0;
 
-    public string $storedEventRepository = OtherEloquentStoredEventRepository::class;
+    public $storedEventRepository = OtherEloquentStoredEventRepository::class;
 
     public function addMoney(int $amount): self
     {

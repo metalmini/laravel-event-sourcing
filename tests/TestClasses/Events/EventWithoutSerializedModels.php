@@ -6,7 +6,7 @@ use Spatie\EventSourcing\StoredEvents\ShouldBeStored;
 
 class EventWithoutSerializedModels extends ShouldBeStored
 {
-    public string $value;
+    public $value;
 
     public function __construct(string $value)
     {

@@ -6,7 +6,7 @@ use Spatie\EventSourcing\StoredEvents\Repositories\StoredEventRepository;
 
 class EventSubscriber
 {
-    private StoredEventRepository $repository;
+    private $repository;
 
     public function __construct(string $storedEventRepository)
     {

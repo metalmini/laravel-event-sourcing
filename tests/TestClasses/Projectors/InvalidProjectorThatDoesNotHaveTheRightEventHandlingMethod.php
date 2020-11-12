@@ -7,7 +7,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Events\MoneyAddedEvent;
 
 class InvalidProjectorThatDoesNotHaveTheRightEventHandlingMethod extends Projector
 {
-    protected array $handlesEvents = [
+    protected $handlesEvents = [
         MoneyAddedEvent::class => 'hahaThisMethodDoesNotExist',
     ];
 }

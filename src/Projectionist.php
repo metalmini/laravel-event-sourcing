@@ -18,17 +18,17 @@ use Spatie\EventSourcing\StoredEvents\StoredEvent;
 
 class Projectionist
 {
-    private EventHandlerCollection $projectors;
+    private $projectors;
 
-    private EventHandlerCollection $reactors;
+    private $reactors;
 
-    private bool $catchExceptions;
+    private $catchExceptions;
 
-    private bool $replayChunkSize;
+    private $replayChunkSize;
 
-    private bool $isProjecting = false;
+    private $isProjecting = false;
 
-    private bool $isReplaying = false;
+    private $isReplaying = false;
 
     public function __construct(array $config)
     {
@@ -98,7 +98,9 @@ class Projectionist
 
     public function getProjector(string $name): ?Projector
     {
-        return $this->projectors->first(fn (Projector $projector) => $projector->getName() === $name);
+        return $this->projectors->all()->first(function (Projector $projector) use ($name) {
+            return $projector->getName() === $name;
+        });
     }
 
     public function getAsyncProjectorsFor(StoredEvent $storedEvent): Collection
@@ -176,8 +178,8 @@ class Projectionist
     public function handleStoredEvents($events): void
     {
         collect($events)
-            ->each(fn (StoredEvent $storedEvent) => $this->handleWithSyncEventHandlers($storedEvent))
-            ->each(fn (StoredEvent $storedEvent) => $this->handle($storedEvent));
+            ->each(function (StoredEvent $storedEvent) {return $this->handleWithSyncEventHandlers($storedEvent);})
+            ->each(function (StoredEvent $storedEvent) {return $this->handle($storedEvent);});
     }
 
     public function handle(StoredEvent $storedEvent): void

@@ -15,7 +15,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Models\Account;
 
 class EventSerializerTest extends TestCase
 {
-    protected EventSerializer $eventSerializer;
+    protected $eventSerializer;
 
     public function setUp(): void
     {

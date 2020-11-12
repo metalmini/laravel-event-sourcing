@@ -22,7 +22,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Reactors\SyncBrokeReactor;
 
 class EventSubscriberTest extends TestCase
 {
-    protected Account $account;
+    protected $account;
 
     public function setUp(): void
     {

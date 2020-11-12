@@ -7,9 +7,9 @@ use Spatie\EventSourcing\Tests\TestClasses\Models\Account;
 
 class MoneyAddedEvent extends ShouldBeStored
 {
-    public Account $account;
+    public $account;
 
-    public int $amount;
+    public $amount;
 
     public function __construct(Account $account, int $amount)
     {

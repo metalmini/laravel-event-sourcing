@@ -17,17 +17,17 @@ use Spatie\EventSourcing\StoredEvents\StoredEvent;
 
 abstract class AggregateRoot
 {
-    private string $uuid = '';
+    private $uuid = '';
 
-    private array $recordedEvents = [];
+    private $recordedEvents = [];
 
-    private array $appliedEvents = [];
+    private $appliedEvents = [];
 
-    protected int $aggregateVersion = 0;
+    protected $aggregateVersion = 0;
 
-    protected int $aggregateVersionAfterReconstitution = 0;
+    protected $aggregateVersionAfterReconstitution = 0;
 
-    protected static bool $allowConcurrency = false;
+    protected static $allowConcurrency = false;
 
     /**
      * @param string $uuid
@@ -78,7 +78,7 @@ abstract class AggregateRoot
     {
         $storedEvents = $this->persistWithoutApplyingToEventHandlers();
 
-        $storedEvents->each(fn (StoredEvent $storedEvent) => $storedEvent->handleForAggregateRoot());
+        $storedEvents->each(function (StoredEvent $storedEvent) {return $storedEvent->handleForAggregateRoot();});
 
         $this->aggregateVersionAfterReconstitution = $this->aggregateVersion;
 
@@ -94,7 +94,7 @@ abstract class AggregateRoot
             ->persistMany(
                 $this->getAndClearRecordedEvents(),
                 $this->uuid(),
-                $this->aggregateVersion,
+                $this->aggregateVersion
             );
 
         return $storedEvents;
@@ -105,7 +105,7 @@ abstract class AggregateRoot
         return $this->getSnapshotRepository()->persist(new Snapshot(
             $this->uuid,
             $this->aggregateVersion,
-            $this->getState(),
+            $this->getState()
         ));
     }
 
@@ -134,7 +134,7 @@ abstract class AggregateRoot
         $class = new ReflectionClass($this);
 
         return collect($class->getProperties(ReflectionProperty::IS_PUBLIC))
-            ->reject(fn (ReflectionProperty $reflectionProperty) => $reflectionProperty->isStatic())
+            ->reject(function (ReflectionProperty $reflectionProperty) {return $reflectionProperty->isStatic();})
             ->mapWithKeys(function (ReflectionProperty $property) {
                 return [$property->getName() => $this->{$property->getName()}];
             })->toArray();
@@ -189,7 +189,7 @@ abstract class AggregateRoot
                 $this,
                 $this->uuid,
                 $this->aggregateVersionAfterReconstitution,
-                $latestPersistedVersionId,
+                $latestPersistedVersionId
             );
         }
     }
@@ -224,7 +224,7 @@ abstract class AggregateRoot
 
     public static function fake(string $uuid = null): FakeAggregateRoot
     {
-        $uuid ??= (string)Str::uuid();
+        $uuid = $uuid ?? (string)Str::uuid();
 
         $aggregateRoot = static::retrieve($uuid);
 

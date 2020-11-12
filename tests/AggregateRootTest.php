@@ -26,7 +26,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Models\OtherEloquentStoredEvent;
 
 class AggregateRootTest extends TestCase
 {
-    private string $aggregateUuid;
+    private $aggregateUuid;
 
     public function setUp(): void
     {
@@ -299,7 +299,7 @@ class AggregateRootTest extends TestCase
         $aggregateRoot = AccountAggregateRootWithFailingPersist::retrieve($this->aggregateUuid)->addMoney(123);
 
         $this->assertExceptionThrown(
-            fn () => AggregateRoot::persistInTransaction($aggregateRoot)
+            function () use ($aggregateRoot) {return AggregateRoot::persistInTransaction($aggregateRoot);}
         );
 
         $this->assertCount(0, EloquentStoredEvent::get());
@@ -396,7 +396,7 @@ class AggregateRootTest extends TestCase
 
         Event::assertDispatched(MoneyMultiplied::class);
     }
-  
+
     public function it_can_load_the_uuid()
     {
         $aggregateRoot = (new AccountAggregateRoot())->loadUuid($this->aggregateUuid);

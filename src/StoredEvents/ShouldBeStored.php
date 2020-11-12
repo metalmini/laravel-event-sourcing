@@ -6,7 +6,7 @@ use Spatie\EventSourcing\Enums\MetaData;
 
 abstract class ShouldBeStored
 {
-    private array $metaData = [];
+    private $metaData = [];
 
     public function aggregateRootUuid(): ?string
     {

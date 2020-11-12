@@ -14,7 +14,7 @@ use Spatie\EventSourcing\Tests\TestClasses\Projectors\BalanceProjector;
 
 class StoredEventTest extends TestCase
 {
-    protected Account $account;
+    protected $account;
 
     public function setUp(): void
     {
@@ -134,16 +134,16 @@ class StoredEventTest extends TestCase
 
         $this->assertEquals(0, $storedEvent->aggregate_version);
     }
-    
+
     /** @test */
     public function it_uses_the_original_event_if_set()
     {
         $originalEvent = new MoneyAdded(100);
-        
+
         $eloquentStoredEvent = new EloquentStoredEvent();
-        
+
         $eloquentStoredEvent->setOriginalEvent($originalEvent);
-        
+
         $this->assertSame($originalEvent, $eloquentStoredEvent->event);
     }
 

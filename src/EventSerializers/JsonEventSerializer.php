@@ -8,13 +8,13 @@ use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 
 class JsonEventSerializer implements EventSerializer
 {
-    private SymfonySerializer $serializer;
+    private $serializer;
 
     public function __construct()
     {
         $encoders = [new JsonEncoder()];
         $normalizers = array_map(
-            fn ($className) => new $className,
+            function ($className) {return new $className;},
             config('event-sourcing.event_normalizers')
         );
 
